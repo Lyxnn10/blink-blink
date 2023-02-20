@@ -6,6 +6,7 @@ import utime
 numpix = 8
 pin = 15
 strip = ws2812b.ws2812b(numpix, 0,pin)                          
+#with: 8-bit ws2812 5050 RGB 8-bar led with built-in full-color driving color lamp
 
 RED = (255, 0, 0)
 ORANGE = (255, 165, 0)
