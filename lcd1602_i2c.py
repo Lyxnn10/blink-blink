@@ -1,9 +1,7 @@
 from time import sleep_ms
 
-# The PCF8574 has a jumper selectable address: 0x20 - 0x27
 DEFAULT_I2C_ADDR = 0x27#0x27#
 
-# Defines shifts or masks for the various LCD line attached to the PCF8574
 
 MASK_RS = 0x01
 MASK_RW = 0x02
@@ -14,30 +12,30 @@ SHIFT_DATA = 4
 
 class LcdApi:     
 
-    LCD_CLR = 0x01              # DB0: clear display
-    LCD_HOME = 0x02             # DB1: return to home position
+    LCD_CLR = 0x01
+    LCD_HOME = 0x02
 
-    LCD_ENTRY_MODE = 0x04       # DB2: set entry mode
-    LCD_ENTRY_INC = 0x02        # --DB1: increment
-    LCD_ENTRY_SHIFT = 0x01      # --DB0: shift
+    LCD_ENTRY_MODE = 0x04
+    LCD_ENTRY_INC = 0x02
+    LCD_ENTRY_SHIFT = 0x01
 
-    LCD_ON_CTRL = 0x08          # DB3: turn lcd/cursor on
-    LCD_ON_DISPLAY = 0x04       # --DB2: turn display on
-    LCD_ON_CURSOR = 0x02        # --DB1: turn cursor on
-    LCD_ON_BLINK = 0x01         # --DB0: blinking cursor
+    LCD_ON_CTRL = 0x08 
+    LCD_ON_DISPLAY = 0x04 
+    LCD_ON_CURSOR = 0x02
+    LCD_ON_BLINK = 0x01
 
-    LCD_MOVE = 0x10             # DB4: move cursor/display
-    LCD_MOVE_DISP = 0x08        # --DB3: move display (0-> move cursor)
-    LCD_MOVE_RIGHT = 0x04       # --DB2: move right (0-> left)
+    LCD_MOVE = 0x10 
+    LCD_MOVE_DISP = 0x08  
+    LCD_MOVE_RIGHT = 0x04 
 
-    LCD_FUNCTION = 0x20         # DB5: function set
-    LCD_FUNCTION_8BIT = 0x10    # --DB4: set 8BIT mode (0->4BIT mode)
-    LCD_FUNCTION_2LINES = 0x08  # --DB3: two lines (0->one line)
-    LCD_FUNCTION_10DOTS = 0x04  # --DB2: 5x10 font (0->5x7 font)
-    LCD_FUNCTION_RESET = 0x30   # See "Initializing by Instruction" section
+    LCD_FUNCTION = 0x20  
+    LCD_FUNCTION_8BIT = 0x10 
+    LCD_FUNCTION_2LINES = 0x08 
+    LCD_FUNCTION_10DOTS = 0x04
+    LCD_FUNCTION_RESET = 0x30 
 
-    LCD_CGRAM = 0x40            # DB6: set CG RAM address
-    LCD_DDRAM = 0x80            # DB7: set DD RAM address
+    LCD_CGRAM = 0x40 
+    LCD_DDRAM = 0x80  
 
     LCD_RS_CMD = 0
     LCD_RS_DATA = 1
@@ -137,8 +135,6 @@ class LcdApi:
         """
         if char == '\n':
             if self.implied_newline:
-                # self.implied_newline means we advanced due to a wraparound,
-                # so if we get a newline right after that we ignore it.
                 pass
             else:
                 self.cursor_x = self.num_columns
@@ -261,7 +257,6 @@ class I2cLcd(LcdApi):
         self.i2c.writeto(self.i2c_addr, bytearray([byte | MASK_E]))
         self.i2c.writeto(self.i2c_addr, bytearray([byte]))
         if cmd <= 3:
-            # The home and clear commands require a worst case delay of 4.1 msec
             sleep_ms(5)
 
     def hal_write_data(self, data):
