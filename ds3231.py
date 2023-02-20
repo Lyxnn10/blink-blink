@@ -1,7 +1,7 @@
 import machine
 from machine import I2C,Pin
 
-DS3231_ADDR       = 0x68 #const(0x68)
+DS3231_ADDR       = 0x68
 DS3231_REG_SEC    = b'\x00'
 DS3231_REG_MIN    = b'\x01'
 DS3231_REG_HOUR   = b'\x02'
@@ -27,9 +27,6 @@ SDA = 6
 class DS3231(object):
     def __init__(self):
         self.i2c =I2C(1,scl=Pin(7),sda=Pin(6),freq=100000)
-    #    self.scl = Pin(SCL,Pin.OUT)
-    #    self.sda = Pin(SDA,Pin.OUT)
-    #    self.freq = 100000
         
     def DATE(self, dat=[]):
         if dat==[]:
